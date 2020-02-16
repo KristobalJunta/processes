@@ -53,13 +53,14 @@ class Processes
      */
     public function exists(int $pid): bool
     {
+        echo $pid . "\n";
         return isset($this->get()[$pid]);
     }
 
     /**
      * @return array
      */
-    private function windows(   ): array
+    private function windows(): array
     {
 
         $processes = [];
@@ -68,7 +69,7 @@ class Processes
          * Fastlist source code
          * @link https://github.com/MarkTiedemann/fastlist
          */
-        $process = new Process([__DIR__ . '/fastlist.exe']);
+        $process = new Process([__DIR__ . '/../fastlist.exe']);
         $process->run();
         $output = $process->getOutput();
         $output = explode("\n", trim($output));
@@ -76,6 +77,7 @@ class Processes
             return explode("\t", $line);
         }, $output);
         array_map(static function ($item) use (&$processes) {
+            // var_dump($item);
             list($name, $pid, $ppid) = $item;
             $processes[(int)$pid] = [
                 static::PID => (int)$pid,
@@ -83,6 +85,9 @@ class Processes
                 'name' => $name,
             ];
         }, $output);
+
+        var_dump($processes);
+        echo "\n";
 
         return $processes;
     }
