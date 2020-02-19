@@ -61,7 +61,6 @@ class Processes
      */
     private function windows(): array
     {
-
         $processes = [];
 
         /**
@@ -76,7 +75,6 @@ class Processes
             return explode("\t", $line);
         }, $output);
         array_map(static function ($item) use (&$processes) {
-            // var_dump($item);
             list($name, $pid, $ppid) = $item;
             $processes[(int)$pid] = [
                 static::PID => (int)$pid,
