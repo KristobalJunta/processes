@@ -53,8 +53,7 @@ class Processes
      */
     public function exists(int $pid): bool
     {
-        echo $pid . "\n";
-        return isset($this->get()[$pid]);
+        return array_key_exists($pid, $this->processes);
     }
 
     /**
@@ -86,10 +85,8 @@ class Processes
             ];
         }, $output);
 
-        var_dump($processes);
-        echo "\n";
-
-        return $processes;
+        $this->processes = $processes;
+        return $this->processes;
     }
 
     /**

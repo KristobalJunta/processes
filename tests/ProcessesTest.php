@@ -57,7 +57,7 @@ class ProcessesTest extends TestCase
             $this->markTestSkipped('This test run only on Windows');
         }
 
-        $process = new Process(['php', 'while.php']);
+        $process = Process::fromShellCommandline('while.exe');
 
         $process->start();
 
