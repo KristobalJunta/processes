@@ -12,7 +12,7 @@ class ProcessesTest extends TestCase
             $this->markTestSkipped('This test run only on Unix');
         }
 
-        $process = new Process(['php', 'while.php']);
+        $process = Process::fromShellCommandline('tests/assets/while');
 
         $process->start();
 
@@ -57,7 +57,7 @@ class ProcessesTest extends TestCase
             $this->markTestSkipped('This test run only on Windows');
         }
 
-        $process = Process::fromShellCommandline('while.exe');
+        $process = Process::fromShellCommandline('tests/assets/while.exe');
 
         $process->start();
 
