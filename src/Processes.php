@@ -104,11 +104,13 @@ class Processes
     {
         try {
             try {
+                throw new \Exception;
                 return $this->unixOneCall($all);
             } catch (Throwable $e) {
                 return $this->unixMultiCall($all);
             }
         } catch (Throwable $e) {
+            var_dump($e);
             return $this->processes;
         }
     }
@@ -153,6 +155,7 @@ class Processes
         }
 
         $this->processes = $processes;
+        var_dump($this->processes);
         return $this->processes;
     }
 
@@ -169,6 +172,7 @@ class Processes
                 continue;
             }
             $process = new Process(['ps', $this->getFlags($all), static::PID . ",${cmd}"]);
+            $process = shell_exec(implode(' ', ['ps', $this->getFlags($all), static::PID . ",${cmd}"]));
             $process->run();
 
             $output = $process->getOutput();
@@ -178,10 +182,10 @@ class Processes
             foreach ($output as $line) {
                 $line = trim($line);
                 $split = array_filter(preg_split('/\s+/', $line));
-                $pid = $split[0];
-                if (!isset($split[1])) {
+                if (\count($split) !== 2) {
                     continue;
                 }
+                $pid = (int)$split[0];
                 $val = trim($split[1]);
 
                 if (!isset($processes[$pid])) {
@@ -199,15 +203,17 @@ class Processes
             }
         }
 
-        $this->processes = array_filter($processes, static function ($item) {
+        /* $this->processes = array_filter($processes, static function ($item) {
             $filled = true;
             foreach (static::COLUMNS as $cmd) {
-                if (empty($item[$cmd])) {
+                if (!isset($item[$cmd])) {
                     $filled = false;
                 }
             }
             return $filled;
-        });
+        }); */
+        $this->processes = $processes;
+        var_dump($this->processes);
         return $this->processes;
     }
 }

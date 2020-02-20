@@ -23,6 +23,7 @@ class ProcessesTest extends TestCase
             $this->assertGreaterThan(0, $process->getPid());
 
             $processes = new Processes(true);
+            var_dump($process->getPid());
             $this->assertTrue($processes->exists($process->getPid()));
 
             $p = $processes->get()[$process->getPid()];
